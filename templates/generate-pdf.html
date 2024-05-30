@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Ver todos los productos</title> {% endblock %}
+{% block content %}
+<section class="view_products h-100" style="height: 60dhv;">
+    <div class="container">
+        <h1 class="text-center mt-5">Buscar producto</h1>
+        <div class="card" style="margin-bottom: 50px;">
+            <div class="card-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name" class="form-label">Nombre del cliente</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="product" class="form-label">Nombre del proyecto</label>
+                        <select name="product" id="product" class="form-select" required>
+                            <option value="0" selected>Seleccione una opción</option>
+                            {% for product in products %}
+                                <option value="{{product.id}}">{{product.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" id="amount" name="amount" min="1">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Generar factura</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Hacienda Semillitas</title> {% endblock %}
+{% block content %}
+<section class="login">
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top: 100px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Iniciar Sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'login' %}" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email registrado</label>
+                            <input type="text" class="form-control" id="email" name="email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+                        <div class="mb-3">
+                            <p class="text-center">¿No eres miembro? <a href="{% url 'Register' %}" style="text-decoration: none; color: rgb(0, 47, 255);">Registrate</a></p>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% if request.user.is_authenticated %}
+    <section class="add-products">
+        <div class="container">
+            <h1>Agrega tus productos a vender</h1>
+            <a href="{% url 'Products' %}" class="btn btn-success">Agregar productos</a>
+        </div>
+    </section>
+{% endif %}
+<section class="see-products">
+    <div class="container">
+        <h1>Ver los productos</h1>
+        <a href="{% url 'View-products' %}" class="btn btn-primary">Ver productos</a>
+    </div>
+</section>
+{% if request.user.is_authenticated %}
+    <section class="generate_receive">
+        <div class="container">
+            <h1>Generar PDF</h1>
+            <a href="{% url 'Generate_pdf' %}" class="btn btn-primary">Generar PDF</a>
+        </div>
+    </section>
+{% endif %}
+{% endblock %}
