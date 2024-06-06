@@ -28,16 +28,25 @@ class LoginView(View):
 
 class RegisterView(View):
     def get(self, request):
-        return render(request, 'register.html')
+        if request.user.is_authenticated:
+            return redirect('/')
+        college = College.objects.all()
+        return render(request, 'register.html', {'colleges': college})
     def post(self, request):
         company = request.POST.get('company')
         email = request.POST.get('email')
         password = request.POST.get('password')
+        college = request.POST.get('college')
+        name = request.POST.get('name')
+        last_name = request.POST.get('last_name')
+
+        full_name = f'{name} {last_name}'
         if CustomUser.objects.filter(email=email).exists():
             messages.error(request, 'El correo ya existe')
             return redirect('/')
         else:
-            CustomUser.objects.create_user(email=email, password=password, company_name=company)
+            colegio = College.objects.get(id=college)
+            CustomUser.objects.create_user(email=email, password=password, company_name=company, college=colegio, name_of_student=full_name)
             user = authenticate(request, email=email, password=password)
             login(request, user)
             messages.success(request, 'Registrado exitosamente')

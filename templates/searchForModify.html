@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Buscar producto</title> {% endblock %}
+{% block content %}
+<section class="view_products">
+    <div class="container">
+        <h1 class="text-center mt-5">Buscar producto</h1>
+        <div class="card d-flex justify-content-center align-items-center text-center" style="margin-bottom: 70px;">
+            <div class="card-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="product" class="form-label">Nombre del producto</label>
+                        <select name="product" id="product" class="form-select" required>
+                            <option value="0" selected>Seleccione una aplicación</option>
+                            {% for product in products %}
+                                <option value="{{product.id}}">{{product.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-50">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

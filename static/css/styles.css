@@ -53,6 +53,10 @@
     height: 50dvh;
     color: white;
 }
+
+.logout:hover{
+    text-decoration: underline;
+}
 @media only screen and (min-width: 768px) {
     .img-mep{
         width: 40%;

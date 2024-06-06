@@ -3,6 +3,19 @@
 {% load pwa %}
 {% block title %} <title>Productos</title> {% endblock %}
 {% block content %}
+<style>
+    /* Estilo para ocultar los botones de incremento y decremento en Chrome, Safari y Edge */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Estilo para ocultar los botones de incremento y decremento en Firefox */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+</style>
 <section class="products">
     <div class="container">
         <h1 class="text-center mt-5 mb-4">Productos a vender</h1>

@@ -22,5 +22,6 @@ urlpatterns = [
     path('', include('PageLogin.urls')),
     path('', include('pwa.urls')),
     path('', include('PagePrincipal.urls')),
-    path('', include('Generate_PDF.urls'))
+    path('', include('Generate_PDF.urls')),
+    path('', include('PanelAdmin.urls'))
 ]

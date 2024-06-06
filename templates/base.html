@@ -20,9 +20,14 @@
             <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler btn-mobile" data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    {% if request.user.is_superuser or request.user.adminCollege %}
+                        <li class="nav-item">
+                            <a href="{% url 'Admin' %}" class="nav-link logout" style="font-size: 20px;">Administrador</a>
+                        </li>
+                    {% endif %}
                     {% if request.user.is_authenticated %}
                         <li class="nav-item">
-                            <a href="{% url 'logout' %}" class="nav-link" style="font-size: 20px;">{{request.user}} logout</a>
+                            <a href="{% url 'logout' %}" class="nav-link logout" style="font-size: 20px;">{{request.user.company_name}} logout</a>
                         </li>
                     {% else %}
                         <li class="nav-item">

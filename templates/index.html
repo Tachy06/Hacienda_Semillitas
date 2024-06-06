@@ -16,7 +16,7 @@
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="email" class="form-label">Email registrado</label>
-                            <input type="text" class="form-control" id="email" name="email">
+                            <input type="email" class="form-control" id="email" name="email">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Contraseña</label>
@@ -35,8 +35,12 @@
 {% if request.user.is_authenticated %}
     <section class="add-products">
         <div class="container">
-            <h1>Agrega tus productos a vender</h1>
-            <a href="{% url 'Products' %}" class="btn btn-success">Agregar productos</a>
+            <h1>Agrega, elimina o modifica tus productos a vender</h1>
+            <div class="d-flex justify-content-center flex-column align-items-center">
+                <a href="{% url 'Products' %}" class="btn btn-success w-50 mb-3">Agregar productos</a>
+                <a href="{% url 'Search' %}" class="btn btn-outline-warning w-50 mb-3">Modificar productos</a>
+                <a href="{% url 'Delete-products' %}" class="btn btn-outline-danger w-50">Eliminar productos</a>
+            </div>
         </div>
     </section>
 {% endif %}
@@ -49,8 +53,8 @@
 {% if request.user.is_authenticated %}
     <section class="generate_receive">
         <div class="container">
-            <h1>Generar PDF</h1>
-            <a href="{% url 'Generate_pdf' %}" class="btn btn-primary">Generar PDF</a>
+            <h1>Generar Factura para un cliente</h1>
+            <a href="{% url 'Generate_pdf' %}" class="btn btn-primary">Generar Factura</a>
         </div>
     </section>
 {% endif %}

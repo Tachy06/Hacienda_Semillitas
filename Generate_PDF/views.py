@@ -22,7 +22,7 @@ class GeneratePDF(LoginRequiredMixin, View):
         product = request.POST.get('product')
         user = CustomUser.objects.get(email=request.user)
         items = ProductsRegister.objects.filter(id=product)
-        print(items)
+        product_name = ProductsRegister.objects.get(id=product).name
         subtotal = sum(item.price * float(amount) for item in items)
         service_charge = subtotal * 0.13
         total = subtotal + service_charge
@@ -33,7 +33,7 @@ class GeneratePDF(LoginRequiredMixin, View):
             'date': datetime.datetime.now().strftime('%Y-%m-%d'),
             'time': datetime.datetime.now().strftime('%H:%M %p'),
             'identifier': name_customer,
-            'seller': user.company_name,
+            'seller': user.name_of_student,
             'items': items,
             'amount': amount,
             'subtotal': subtotal,
@@ -48,8 +48,11 @@ class GeneratePDF(LoginRequiredMixin, View):
         html = HTML(string=html_string)
         pdf = html.write_pdf()
 
+        # Guardar el PDF en la base de datos
+        GenerateInvoice.objects.create(user=user, college=user.college, customer=name_customer, product=product_name, quantity=amount, total=total)
+
         # Responder con el PDF
         response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = 'inline; filename="invoice.pdf"'
+        response['Content-Disposition'] = f'inline; filename="Factura para {name_customer}.pdf"'
 
         return response
