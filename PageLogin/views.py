@@ -55,3 +55,7 @@ class RegisterView(View):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+
+def testLogin(request):
+    return render(request, 'testLogin.html')

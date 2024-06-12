@@ -4,12 +4,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from PageLogin.models import CustomUser
 from django.contrib import messages
+from datetime import date
 
 # Create your views here.
 class productsView(LoginRequiredMixin, View):
     login_url = '/'
     def get(self, request):
-        return render(request, 'products.html')
+        year = date.today().year
+        return render(request, 'products.html', {'year': year})
     def post(self, request):
         product = request.POST.get('product')
         description = request.POST.get('description')
@@ -21,14 +23,16 @@ class productsView(LoginRequiredMixin, View):
 class ProductsView(View):
     def get(self, request):
         products = ProductsRegister.objects.all()
-        return render(request, 'view-products.html', {'products': products})
+        year = date.today().year
+        return render(request, 'view-products.html', {'products': products, 'year': year})
     
 class deleteProductsView(LoginRequiredMixin, View):
     login_url = '/'
     def get(self, request):
         user = CustomUser.objects.get(email=request.user)
         products = ProductsRegister.objects.filter(user=user)
-        return render(request, 'delete-products.html', {'products': products})
+        year = date.today().year
+        return render(request, 'delete-products.html', {'products': products, 'year': year})
     
 class deleteProducts(LoginRequiredMixin, View):
     login_url = '/'
@@ -42,7 +46,8 @@ class searchForModify(LoginRequiredMixin, View):
     def get(self, request):
         user = CustomUser.objects.get(email=request.user)
         product = ProductsRegister.objects.filter(user=user)
-        return render(request, 'searchForModify.html', {'products': product})
+        year = date.today().year
+        return render(request, 'searchForModify.html', {'products': product, 'year': year})
     def post(self, request):
         product = request.POST.get('product')
         user = CustomUser.objects.get(email=request.user)
@@ -53,7 +58,8 @@ class ModifyProducts(LoginRequiredMixin, View):
     login_url = '/'
     def get(self, request, product_id):
         product = ProductsRegister.objects.get(id=product_id)
-        return render(request, 'modifyProducts.html', {'product': product})
+        year = date.today().year
+        return render(request, 'modifyProducts.html', {'product': product, 'year': year})
     def post(self, request, product_id):
         product = get_object_or_404(ProductsRegister, id=product_id, user=request.user)
         productSearch =request.POST.get('product')

@@ -9,21 +9,34 @@ from Generate_PDF.models import *
 class AdminCollegueView(LoginRequiredMixin, View):
     login_url = '/login/'
     def get(self, request):
-        user = CustomUser.objects.get(email=request.user)
-        college = College.objects.get(name=user.college)
-        invoices = GenerateInvoice.objects.filter(college=college)
-        total = sum(float(product.total) for product in invoices)
-        url = '/'
-        return render(request, 'PanelAdmin.html', {'invoices': invoices, 'total': total, 'url': url})
+        if request.user.adminCollege:
+            user = CustomUser.objects.get(email=request.user)
+            college = College.objects.get(name=user.college)
+            invoices = GenerateInvoice.objects.filter(college=college)
+            total = sum(float(product.total) for product in invoices)
+            url = '/'
+            return render(request, 'PanelAdmin.html', {'invoices': invoices, 'total': total, 'url': url})
+        elif request.user.is_superuser:
+            user = CustomUser.objects.get(email=request.user)
+            invoices = GenerateInvoice.objects.all()
+            total = sum(float(product.total) for product in invoices)
+            url = '/'
+            return render(request, 'PanelAdmin.html', {'invoices': invoices, 'total': total, 'url': url})
     
 class viewProductsAdmin(LoginRequiredMixin, View):
     login_url = '/login/'
     def get(self, request):
-        user = CustomUser.objects.get(email=request.user)
-        college = College.objects.get(name=user.college)
-        products = ProductsRegister.objects.filter(college=college)
-        url = '/adminPanel/'
-        return render(request, 'viewProductsAdmin.html', {'products': products, 'url': url})
+        if request.user.adminCollege:
+            user = CustomUser.objects.get(email=request.user)
+            college = College.objects.get(name=user.college)
+            products = ProductsRegister.objects.filter(college=college)
+            url = '/adminPanel/'
+            return render(request, 'viewProductsAdmin.html', {'products': products, 'url': url})
+        elif request.user.is_superuser:
+            user = CustomUser.objects.get(email=request.user)
+            products = ProductsRegister.objects.all()
+            url = '/adminPanel/'
+            return render(request, 'viewProductsAdmin.html', {'products': products, 'url': url})
     
 class deleteAvoiceAdmin(LoginRequiredMixin, View):
     login_url = '/login/'

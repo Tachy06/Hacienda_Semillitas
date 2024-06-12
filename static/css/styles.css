@@ -67,4 +67,12 @@
         position: relative;
         bottom: 10px;
     }
+
+    .view_products_modify{
+        height: 62dvh;
+    }
+
+    .view_products_modify .container{
+        margin: auto;
+    }
 }

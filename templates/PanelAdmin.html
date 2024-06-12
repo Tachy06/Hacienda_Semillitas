@@ -23,39 +23,74 @@
             </a>
         </div>
     </section>
-    {% if request.user.adminCollege %}
-        {% block content %} 
-            <section class="products_Admin">
+    {% block content %} 
+        {% if request.user.is_superuser %}
+            <div class="products_admin">
                 <div class="container">
-                    <h1 class="text-center mt-3 mb-3">Panel Administrador del colegio {{user.college}}</h1>
+                    <h1 class="text-center mt-3 mb-3">Panel Administrador</h1>
                     <div class="buttons-centered d-flex flex-row justify-content-center align-items-center">
-                        <a href="{% url 'ViewProductsAdmin' %}" class="btn btn-primary">Ver todos los productos</a>
-                        <a href="" class="btn btn-primary mx-1">Ver las empresas de los estudiantes</a>
+                        <a href="{% url 'ViewProductsAdmin' %}" class="btn btn-primary">Ver todos los productos del país</a>
+                        <a href="" class="btn btn-primary mx-1">Ver las empresas de todos los estudiantes</a>
                     </div>
-                    <h2 class="text-center mt-3 mb-3">Ver todas las facturas del colegio {{user.college}}</h2>
+                    <h2 class="text-center mt-3 mb-3">Ver todas las facturas del sistema</h2>
                     {% for invoice in invoices %}
-                    <div class="card-container d-flex justify-content-center align-items-center">
-                        <div class="card d-flex justify-content-center align-items-center text-center mt-4 mb-2" style="width: 40rem;">
-                            <div class="card-body">
-                                <p class="card-text">Nombre del producto: <span style="font-weight: bold;">{{invoice.product}}</span></p>
-                                <p class="card-text">Cliente: <span style="font-weight: bold;">{{invoice.customer}}</span></p>
-                                <p class="card-text">Vendedor: <span style="font-weight: bold;">{{invoice.user.name_of_student}}</span></p>
-                                <p class="card-text">Empresa: <span style="font-weight: bold;">{{invoice.user.company_name}}</span></p>
-                                <p class="card-text">Cantidad: <span style="font-weight: bold;">{{invoice.quantity}}</span></p>
-                                <p class="card-text">Total: <span style="font-weight: bold;">₡{{invoice.total}}</span></p>
-                                <p class="card-text">Fecha: <span style="font-weight: bold;">{{invoice.date}}</span></p>
-                                <form action="{% url 'DeleteInvoice' invoice.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-outline-danger d-flex justify-content-center mx-auto w-50">Eliminar</button>
-                                </form>
+                        <div class="card-container d-flex justify-content-center align-items-center">
+                            <div class="card d-flex justify-content-center align-items-center text-center mt-4 mb-2" style="width: 40rem;">
+                                <div class="card-body">
+                                    <p class="card-text">Nombre del producto: <span style="font-weight: bold;">{{invoice.product}}</span></p>
+                                    <p class="card-text">Cliente: <span style="font-weight: bold;">{{invoice.customer}}</span></p>
+                                    <p class="card-text">Vendedor: <span style="font-weight: bold;">{{invoice.user.name_of_student}}</span></p>
+                                    <p class="card-text">Empresa: <span style="font-weight: bold;">{{invoice.user.company_name}}</span></p>
+                                    <p class="card-text">Cantidad: <span style="font-weight: bold;">{{invoice.quantity}}</span></p>
+                                    <p class="card-text">Total: <span style="font-weight: bold;">₡{{invoice.total}}</span></p>
+                                    <p class="card-text">Fecha: <span style="font-weight: bold;">{{invoice.date}}</span></p>
+                                    <form action="{% url 'DeleteInvoice' invoice.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger d-flex justify-content-center mx-auto w-50">Eliminar</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
                     <h3 class="text-center mt-4 mb-4">Total recaudado: ₡{{total}}</h3>
                 </div>
-            </section>
-        {% endblock %}
-    {% endif %}
+            </div>
+        {% endif %}
+        {% if request.user.adminCollege %}
+            {% if request.user.is_superuser %}
+            {% else %}
+                <section class="products_Admin">
+                    <div class="container">
+                        <h1 class="text-center mt-3 mb-3">Panel Administrador del colegio {{user.college}}</h1>
+                        <div class="buttons-centered d-flex flex-row justify-content-center align-items-center">
+                            <a href="{% url 'ViewProductsAdmin' %}" class="btn btn-primary">Ver todos los productos</a>
+                            <a href="" class="btn btn-primary mx-1">Ver las empresas de los estudiantes</a>
+                        </div>
+                        <h2 class="text-center mt-3 mb-3">Ver todas las facturas del colegio {{user.college}}</h2>
+                        {% for invoice in invoices %}
+                            <div class="card-container d-flex justify-content-center align-items-center">
+                                <div class="card d-flex justify-content-center align-items-center text-center mt-4 mb-2" style="width: 40rem;">
+                                    <div class="card-body">
+                                        <p class="card-text">Nombre del producto: <span style="font-weight: bold;">{{invoice.product}}</span></p>
+                                        <p class="card-text">Cliente: <span style="font-weight: bold;">{{invoice.customer}}</span></p>
+                                        <p class="card-text">Vendedor: <span style="font-weight: bold;">{{invoice.user.name_of_student}}</span></p>
+                                        <p class="card-text">Empresa: <span style="font-weight: bold;">{{invoice.user.company_name}}</span></p>
+                                        <p class="card-text">Cantidad: <span style="font-weight: bold;">{{invoice.quantity}}</span></p>
+                                        <p class="card-text">Total: <span style="font-weight: bold;">₡{{invoice.total}}</span></p>
+                                        <p class="card-text">Fecha: <span style="font-weight: bold;">{{invoice.date}}</span></p>
+                                        <form action="{% url 'DeleteInvoice' invoice.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger d-flex justify-content-center mx-auto w-50">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <h3 class="text-center mt-4 mb-4">Total recaudado: ₡{{total}}</h3>
+                    </div>
+                </section>
+            {% endif %}
+        {% endif %}
+    {% endblock %}
 </body>
 </html>
