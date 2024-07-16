@@ -3,19 +3,30 @@
 {% load pwa %}
 {% block title %} <title>Ver todos los productos</title> {% endblock %}
 {% block content %}
-<section class="view_products">
-    <div class="container">
-        <h1 class="text-center mt-5">Ver todos los productos</h1>
-        {% for product in products %}
-            <div class="card" style="margin-bottom: 50px;">
-                <div class="card-body">
-                        <p class="card-text text-center">Mini empresa: <span style="font-weight: bold;">{{product.user.company_name}}</span></p>
-                        <p class="card-text text-center">Nombre del producto: <span style="font-weight: bold;">{{product.name}}</span></p>
-                        <p class="card-text text-center">Descripción: <span style="font-weight: bold;">{{product.description}}</span></p>
-                        <p class="card-text text-center">Precio: <span style="font-weight: bold;">₡{{product.price}}</span></p>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+<section id="verProductos" class="container my-5">
+    <h2 class="text-center mt-5">Productos Disponibles</h2>
+    {% for product in products %}
+        <div class="table-responsive">
+            <table class="table tabla-productos">
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Producto</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody id="listaProductos">
+                    <!-- Aquí se agregarán dinámicamente los productos -->
+                    <tr>
+                        <td>{{product.user.company_name}}</td>
+                        <td>{{product.name}}</td>
+                        <td>{{product.description}}</td>
+                        <td>{{product.price}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
 </section>
 {% endblock %}

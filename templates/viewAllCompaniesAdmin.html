@@ -1,0 +1,23 @@
+{% extends 'PanelAdmin.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Ver todas las empresas</title> {% endblock %}
+{% block content %}
+<section class="view_products">
+    <div class="container">
+        <h1 class="text-center mt-5">Ver todas las empresas</h1>
+        {% for company in companies %}
+            <div class="card" style="margin-bottom: 50px;">
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <p class="card-text text-center">Nombre de la empresa: <span style="font-weight: bold;">{{company.company_name}}</span></p>
+                        <p class="card-text text-center">Correo de la empresa: <span style="font-weight: bold;">{{company.email}}</span></p>
+                        <button type="submit" class="btn btn-danger d-flex justify-content-center mx-auto px-3 py-2" style="font-size: 17px;">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -11,19 +11,34 @@ import datetime
 
 class GeneratePDF(LoginRequiredMixin, View):
     login_url = '/'
+    
     def get(self, request):
         user = CustomUser.objects.get(email=request.user)
+        year = datetime.date.today().year
         products = ProductsRegister.objects.filter(user=user)
-        return render(request, 'generate-pdf.html', {'products': products})
+        return render(request, 'generate-pdf.html', {'products': products, 'year': year})
+    
     def post(self, request):
         # Obtener los datos de la factura
         name_customer = request.POST.get('name')
-        amount = request.POST.get('amount')
-        product = request.POST.get('product')
         user = CustomUser.objects.get(email=request.user)
-        items = ProductsRegister.objects.filter(id=product)
-        product_name = ProductsRegister.objects.get(id=product).name
-        subtotal = sum(item.price * float(amount) for item in items)
+        product_ids = request.POST.getlist('products')
+        
+        items = []
+        subtotal = 0
+
+        for product_id in product_ids:
+            quantity = request.POST.get(f'quantity-{product_id}')
+            if quantity and int(quantity) > 0:
+                product = ProductsRegister.objects.get(id=product_id)
+                item_total = product.price * int(quantity)
+                subtotal += item_total
+                items.append({
+                    'product': product,
+                    'quantity': quantity,
+                    'total': item_total
+                })
+        
         service_charge = subtotal * 0.13
         total = subtotal + service_charge
 
@@ -35,7 +50,6 @@ class GeneratePDF(LoginRequiredMixin, View):
             'identifier': name_customer,
             'seller': user.name_of_student,
             'items': items,
-            'amount': amount,
             'subtotal': subtotal,
             'service_charge': service_charge,
             'total': total,
@@ -49,7 +63,15 @@ class GeneratePDF(LoginRequiredMixin, View):
         pdf = html.write_pdf()
 
         # Guardar el PDF en la base de datos
-        GenerateInvoice.objects.create(user=user, college=user.college, customer=name_customer, product=product_name, quantity=amount, total=total)
+        for item in items:
+            GenerateInvoice.objects.create(
+                user=user, 
+                college=user.college, 
+                customer=name_customer, 
+                product=item['product'].name, 
+                quantity=item['quantity'], 
+                total=item['total']
+            )
 
         # Responder con el PDF
         response = HttpResponse(pdf, content_type='application/pdf')

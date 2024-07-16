@@ -3,6 +3,20 @@
 {% load pwa %}
 {% block title %} <title>Hacienda Semillitas</title> {% endblock %}
 {% block content %}
+<div class="jumbotron text-center">
+    <h1 class="display-4">Bienvenido a Semillitas</h1>
+    <p class="lead">Encuentra todos los productos vistos en la feria</p>
+    <hr class="my-4">
+    <p>¡Vamos a comprar!</p>
+    {% if not request.user.is_authenticated %}
+    .
+    <div class="dd-flex justify-content-center align-items-center text-center w-100">
+        <button class="btn btn-custom btn-lg" data-bs-toggle="modal" data-bs-target="#loginModal" style="width: 80%;">Iniciar Sesión / Registrarse</button>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Modal login and register -->
 <section class="login">
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top: 100px;">
         <div class="modal-dialog">
@@ -32,30 +46,33 @@
         </div>
     </div>
 </section>
-{% if request.user.is_authenticated %}
-    <section class="add-products">
-        <div class="container">
-            <h1>Agrega, elimina o modifica tus productos a vender</h1>
-            <div class="d-flex justify-content-center flex-column align-items-center">
-                <a href="{% url 'Products' %}" class="btn btn-success w-50 mb-3">Agregar productos</a>
-                <a href="{% url 'Search' %}" class="btn btn-outline-warning w-50 mb-3">Modificar productos</a>
-                <a href="{% url 'Delete-products' %}" class="btn btn-outline-danger w-50">Eliminar productos</a>
-            </div>
+
+<!-- botones -->
+<section class="buttons-access w-100 " style="background-color: #e9f5dc;">
+    <div class="container w-100">
+        <div class="row justify-content-center align-items-center text-center w-100 ms-1">
+            {% if request.user.is_authenticated %}
+                <div class="col-md-2">
+                    <a href="{% url 'Products' %}" class="btn btn-custom btn-lg btn-block my-3">Agregar</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="{% url 'Search' %}" class="btn btn-custom btn-lg btn-block my-3">Modificar</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="{% url 'Delete-products' %}" class="btn btn-custom btn-lg btn-block my-3">Eliminar</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="{% url 'Search-Collegue' %}" class="btn btn-custom btn-lg btn-block my-3">Ver Productos</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="{% url 'Generate_pdf' %}" class="btn btn-custom btn-lg btn-block my-3">Generar PDF</a>
+                </div>
+            {% else %}
+                <div class="col-md-2">
+                    <a href="{% url 'Search-Collegue' %}" class="btn btn-custom btn-lg btn-block my-3">Ver Productos</a>
+                </div>
+            {% endif %}
         </div>
-    </section>
-{% endif %}
-<section class="see-products">
-    <div class="container">
-        <h1>Ver los productos</h1>
-        <a href="{% url 'View-products' %}" class="btn btn-primary">Ver productos</a>
     </div>
 </section>
-{% if request.user.is_authenticated %}
-    <section class="generate_receive">
-        <div class="container">
-            <h1>Generar Factura para un cliente</h1>
-            <a href="{% url 'Generate_pdf' %}" class="btn btn-primary">Generar Factura</a>
-        </div>
-    </section>
-{% endif %}
 {% endblock %}

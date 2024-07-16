@@ -20,9 +20,18 @@ class productsView(LoginRequiredMixin, View):
         ProductsRegister.objects.create(user=user, name=product, description=description, price=price, college=user.college)
         return redirect('/products')
     
-class ProductsView(View):
+class searchForCollege(View):
     def get(self, request):
-        products = ProductsRegister.objects.all()
+        year = date.today().year
+        college = College.objects.all()
+        return render(request, 'searchForCollege.html', {'year': year, 'colleges': college})
+    def post(self, request):
+        college = request.POST.get('college')
+        return redirect(f'/view-products/{college}')
+    
+class ProductsView(View):
+    def get(self, request, college_id):
+        products = ProductsRegister.objects.filter(college=college_id)
         year = date.today().year
         return render(request, 'view-products.html', {'products': products, 'year': year})
     

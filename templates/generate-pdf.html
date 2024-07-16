@@ -1,36 +1,54 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load pwa %}
-{% block title %} <title>Ver todos los productos</title> {% endblock %}
+{% block title %} <title>Generar Factura</title> {% endblock %}
 {% block content %}
 <section class="view_products h-100" style="height: 60dhv;">
     <div class="container">
-        <h1 class="text-center mt-5">Buscar producto</h1>
+        <h1 class="text-center mt-5">Generar Factura</h1>
         <div class="card" style="margin-bottom: 50px;">
             <div class="card-body">
                 <form action="" method="post">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="name" class="form-label">Nombre del cliente</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Ingresa el nombre del cliente">
                     </div>
                     <div class="mb-3">
-                        <label for="product" class="form-label">Nombre del proyecto</label>
-                        <select name="product" id="product" class="form-select" required>
-                            <option value="0" selected>Seleccione una opción</option>
+                        <label for="products" class="form-label">Productos</label>
+                        <select name="products" id="products" class="form-select" multiple required>
                             {% for product in products %}
-                                <option value="{{product.id}}">{{product.name}}</option>
+                                <option value="{{ product.id }}">{{ product.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label for="amount" class="form-label">Cantidad</label>
-                        <input type="number" class="form-control" id="amount" name="amount" min="1">
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Generar factura</button>
+                    <div id="quantities-container" class="mb-3"></div>
+                    <button type="submit" class="btn btn-custom btn-lg w-100">Generar Factura</button>
                 </form>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const productsSelect = document.getElementById('products');
+        const quantitiesContainer = document.getElementById('quantities-container');
+
+        productsSelect.addEventListener('change', function() {
+            quantitiesContainer.innerHTML = '';
+            for (let option of productsSelect.selectedOptions) {
+                const productId = option.value;
+                const productName = option.text;
+                const inputDiv = document.createElement('div');
+                inputDiv.classList.add('form-group', 'mb-2');
+                inputDiv.innerHTML = `
+                    <label for="quantity-${productId}" class="form-label">Cantidad de ${productName}</label>
+                    <input type="number" class="form-control" id="quantity-${productId}" name="quantity-${productId}" min="1" placeholder="Cantidad de ${productName}" required>
+                `;
+                quantitiesContainer.appendChild(inputDiv);
+            }
+        });
+    });
+</script>
 {% endblock %}

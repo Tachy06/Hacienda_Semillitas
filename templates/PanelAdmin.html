@@ -25,12 +25,20 @@
     </section>
     {% block content %} 
         {% if request.user.is_superuser %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+                    <p style="font-size: 17px; font-weight: bold;">{{ message }}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
             <div class="products_admin">
                 <div class="container">
                     <h1 class="text-center mt-3 mb-3">Panel Administrador</h1>
                     <div class="buttons-centered d-flex flex-row justify-content-center align-items-center">
                         <a href="{% url 'ViewProductsAdmin' %}" class="btn btn-primary">Ver todos los productos del país</a>
-                        <a href="" class="btn btn-primary mx-1">Ver las empresas de todos los estudiantes</a>
+                        <a href="{% url 'ViewAllCompanies' %}" class="btn btn-primary mx-1">Ver las empresas de todos los estudiantes</a>
                     </div>
                     <h2 class="text-center mt-3 mb-3">Ver todas las facturas del sistema</h2>
                     {% for invoice in invoices %}
@@ -60,6 +68,14 @@
             {% if request.user.is_superuser %}
             {% else %}
                 <section class="products_Admin">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+                                <p style="font-size: 17px; font-weight: bold;">{{ message }}</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                     <div class="container">
                         <h1 class="text-center mt-3 mb-3">Panel Administrador del colegio {{user.college}}</h1>
                         <div class="buttons-centered d-flex flex-row justify-content-center align-items-center">
@@ -92,5 +108,6 @@
             {% endif %}
         {% endif %}
     {% endblock %}
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script> 
 </body>
 </html>
