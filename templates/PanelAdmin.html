@@ -40,6 +40,9 @@
                         <a href="{% url 'ViewProductsAdmin' %}" class="btn btn-primary">Ver todos los productos del país</a>
                         <a href="{% url 'ViewAllCompanies' %}" class="btn btn-primary mx-1">Ver las empresas de todos los estudiantes</a>
                     </div>
+                    <div class="buttons-centered d-flex flex-row justify-content-center align-items-center mt-3">
+                        <a href="" class="btn btn-primary">Crear usuario administrador</a>
+                    </div>
                     <h2 class="text-center mt-3 mb-3">Ver todas las facturas del sistema</h2>
                     {% for invoice in invoices %}
                         <div class="card-container d-flex justify-content-center align-items-center">

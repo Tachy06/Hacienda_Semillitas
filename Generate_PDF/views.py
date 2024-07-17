@@ -6,6 +6,7 @@ from PageLogin.models import CustomUser
 from PagePrincipal.models import ProductsRegister
 from django.http import HttpResponse
 from weasyprint import HTML
+from datetime import date
 import datetime
 # Create your views here.
 
@@ -14,7 +15,7 @@ class GeneratePDF(LoginRequiredMixin, View):
     
     def get(self, request):
         user = CustomUser.objects.get(email=request.user)
-        year = datetime.date.today().year
+        year = date.today().year
         products = ProductsRegister.objects.filter(user=user)
         return render(request, 'generate-pdf.html', {'products': products, 'year': year})
     
@@ -23,6 +24,7 @@ class GeneratePDF(LoginRequiredMixin, View):
         name_customer = request.POST.get('name')
         user = CustomUser.objects.get(email=request.user)
         product_ids = request.POST.getlist('products')
+        payment_method = request.POST.get('payment_method')
         
         items = []
         subtotal = 0
@@ -39,8 +41,7 @@ class GeneratePDF(LoginRequiredMixin, View):
                     'total': item_total
                 })
         
-        service_charge = subtotal * 0.13
-        total = subtotal + service_charge
+        total = subtotal
 
         # Contexto para el template
         context = {
@@ -51,7 +52,7 @@ class GeneratePDF(LoginRequiredMixin, View):
             'seller': user.name_of_student,
             'items': items,
             'subtotal': subtotal,
-            'service_charge': service_charge,
+            'payment_method': payment_method,
             'total': total,
         }
 
@@ -70,11 +71,13 @@ class GeneratePDF(LoginRequiredMixin, View):
                 customer=name_customer, 
                 product=item['product'].name, 
                 quantity=item['quantity'], 
+                method_paid=payment_method,
                 total=item['total']
             )
 
         # Responder con el PDF
         response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = f'inline; filename="Factura para {name_customer}.pdf"'
+        filename = f"Factura_para_{name_customer}.pdf"
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
         return response

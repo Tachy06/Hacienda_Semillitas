@@ -8,6 +8,7 @@ class GenerateInvoice(models.Model):
     customer = models.CharField(max_length=100, null=False)
     product = models.CharField(max_length=100, null=False)
     quantity = models.IntegerField(null=False)
+    method_paid = models.CharField(max_length=100, null=False)
     total = models.FloatField(null=False)
     date = models.DateField(auto_now_add=True)
 

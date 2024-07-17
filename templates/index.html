@@ -3,14 +3,13 @@
 {% load pwa %}
 {% block title %} <title>Hacienda Semillitas</title> {% endblock %}
 {% block content %}
-<div class="jumbotron text-center">
-    <h1 class="display-4">Bienvenido a Semillitas</h1>
-    <p class="lead">Encuentra todos los productos vistos en la feria</p>
+<div class="text-center pagePrincipal" style="color: rgb(255, 255, 255);">
+    <h1 class="display-4">Bienvenido a programa joven</h1>
+    <p class="lead"> Simulador de facturación electrónica para el programa joven</p>
     <hr class="my-4">
     <p>¡Vamos a comprar!</p>
     {% if not request.user.is_authenticated %}
-    .
-    <div class="dd-flex justify-content-center align-items-center text-center w-100">
+    <div class="d-flex justify-content-center align-items-center text-center w-100">
         <button class="btn btn-custom btn-lg" data-bs-toggle="modal" data-bs-target="#loginModal" style="width: 80%;">Iniciar Sesión / Registrarse</button>
     </div>
     {% endif %}
@@ -60,6 +59,9 @@
                 </div>
                 <div class="col-md-2">
                     <a href="{% url 'Delete-products' %}" class="btn btn-custom btn-lg btn-block my-3">Eliminar</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="{% url 'View_Invoices' %}" class="btn btn-custom btn-lg btn-block my-3">Ver ganancias</a>
                 </div>
                 <div class="col-md-2">
                     <a href="{% url 'Search-Collegue' %}" class="btn btn-custom btn-lg btn-block my-3">Ver Productos</a>

@@ -5,6 +5,7 @@ from .models import *
 from PageLogin.models import CustomUser
 from django.contrib import messages
 from datetime import date
+from Generate_PDF.models import GenerateInvoice
 
 # Create your views here.
 class productsView(LoginRequiredMixin, View):
@@ -88,3 +89,19 @@ class ModifyProducts(LoginRequiredMixin, View):
         product.price = price
         product.save()
         return redirect('/')
+    
+class View_Invoices(LoginRequiredMixin, View):
+    login_url = '/'
+    def get(self, request):
+        year = date.today().year
+        user = CustomUser.objects.get(email=request.user)
+        invoices = GenerateInvoice.objects.filter(user=user)
+        total_efectivo = 0
+        total_sinpe = 0
+        for invoice in invoices:
+            if invoice.method_paid == 'Efectivo':
+                total_efectivo = total_efectivo + float(invoice.total)
+            else:
+                total_sinpe = total_sinpe + float(invoice.total)
+        total_recaudado = total_efectivo + total_sinpe
+        return render(request, 'view_invoice.html', {'year': year, 'invoices': invoices, 'total_efectivo': total_efectivo, 'total_sinpe': total_sinpe, 'total_recaudado': total_recaudado})
