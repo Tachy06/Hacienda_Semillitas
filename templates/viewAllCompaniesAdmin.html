@@ -11,9 +11,15 @@
                 <div class="card-body">
                     <form action="" method="post">
                         {% csrf_token %}
-                        <p class="card-text text-center">Nombre de la empresa: <span style="font-weight: bold;">{{company.company_name}}</span></p>
-                        <p class="card-text text-center">Correo de la empresa: <span style="font-weight: bold;">{{company.email}}</span></p>
-                        <button type="submit" class="btn btn-danger d-flex justify-content-center mx-auto px-3 py-2" style="font-size: 17px;">Eliminar</button>
+                        {% if company.is_superuser %}
+                            <p class="card-text text-center">Nombre del admin: <span style="font-weight: bold;">{{company.name_of_student}}</span></p>
+                            <p class="card-text text-center">Correo del admin: <span style="font-weight: bold;">{{company.email}}</span></p>
+                            <button type="submit" class="btn btn-danger d-flex justify-content-center mx-auto px-3 py-2" style="font-size: 17px;">Eliminar</button>
+                        {% else %}
+                            <p class="card-text text-center">Nombre de la empresa: <span style="font-weight: bold;">{{company.company_name}}</span></p>
+                            <p class="card-text text-center">Correo de la empresa: <span style="font-weight: bold;">{{company.email}}</span></p>
+                            <button type="submit" class="btn btn-danger d-flex justify-content-center mx-auto px-3 py-2" style="font-size: 17px;">Eliminar</button>
+                        {% endif %}
                     </form>
                 </div>
             </div>

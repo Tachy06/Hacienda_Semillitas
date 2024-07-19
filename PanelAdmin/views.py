@@ -65,3 +65,24 @@ class viewAllCompaniesAdmin(LoginRequiredMixin, View):
             companies = CustomUser.objects.all()
             url = '/adminPanel/'
             return render(request, 'viewAllCompaniesAdmin.html', {'companies': companies, 'url': url})
+        
+class CreateSuperAdmin(LoginRequiredMixin, View):
+    login_url = '/login/'
+    def get(self, request):
+        url = '/adminPanel/'
+        colleges = College.objects.all()
+        return render(request, 'createSuperAdmin.html', {'url': url, 'colleges':colleges})
+    def post(self, request):
+        name = request.POST.get('name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        college = request.POST.get('college')
+        password = request.POST.get('password')
+        try:
+            user = CustomUser.objects.get(email=email)
+            messages.error(request, 'El correo ya existe')
+            return redirect('/adminPanel/')
+        except CustomUser.DoesNotExist:
+            CustomUser.objects.create_superuser(email=email, password=password, company_name=f'{name} {last_name}', name_of_student=f'{name} {last_name}', college=College.objects.get(id=college))
+            messages.success(request, 'Super Administrador creado exitosamente')
+            return redirect('/adminPanel/')

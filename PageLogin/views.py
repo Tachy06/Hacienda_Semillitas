@@ -31,7 +31,8 @@ class RegisterView(View):
         if request.user.is_authenticated:
             return redirect('/')
         college = College.objects.all()
-        return render(request, 'register.html', {'colleges': college})
+        url = '/'
+        return render(request, 'register.html', {'colleges': college, 'url': url})
     def post(self, request):
         company = request.POST.get('company')
         email = request.POST.get('email')

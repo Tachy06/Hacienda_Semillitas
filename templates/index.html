@@ -3,9 +3,17 @@
 {% load pwa %}
 {% block title %} <title>Hacienda Semillitas</title> {% endblock %}
 {% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+            <p style="font-size: 17px; font-weight: bold;">{{ message }}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
 <div class="text-center pagePrincipal" style="color: rgb(255, 255, 255);">
-    <h1 class="display-4">Bienvenido a programa joven</h1>
-    <p class="lead"> Simulador de facturación electrónica para el programa joven</p>
+    <h1 class="display-4">Bienvenido a programa jovem</h1>
+    <p class="lead"> Simulador de facturación electrónica para el programa jovem</p>
     <hr class="my-4">
     <p>¡Vamos a comprar!</p>
     {% if not request.user.is_authenticated %}
