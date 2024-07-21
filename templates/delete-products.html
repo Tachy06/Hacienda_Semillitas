@@ -5,6 +5,14 @@
 {% block content %}
 <section class="view_products">
     <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+                    <p style="font-size: 17px; font-weight: bold;">{{ message }}. Toca el logo del mep para volver a la página principal</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
         <h1 class="text-center mt-5">Eliminar productos</h1>
         {% for product in products %}
             <div class="card" style="margin-bottom: 50px;">

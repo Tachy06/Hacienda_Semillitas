@@ -19,6 +19,7 @@ class productsView(LoginRequiredMixin, View):
         price = request.POST.get('price')
         user = CustomUser.objects.get(email=request.user)
         ProductsRegister.objects.create(user=user, name=product, description=description, price=price, college=user.college)
+        messages.success(request, 'Producto creado exitosamente')
         return redirect('/products')
     
 class searchForCollege(View):
@@ -49,6 +50,7 @@ class deleteProducts(LoginRequiredMixin, View):
     def post(self, request, product_id):
         product = get_object_or_404(ProductsRegister, id=product_id, user=request.user)
         product.delete()
+        messages.success(request, 'Producto eliminado exitosamente')
         return redirect('/delete-products/')
     
 class searchForModify(LoginRequiredMixin, View):

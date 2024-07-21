@@ -66,6 +66,11 @@ class viewAllCompaniesAdmin(LoginRequiredMixin, View):
             url = '/adminPanel/'
             return render(request, 'viewAllCompaniesAdmin.html', {'companies': companies, 'url': url})
         
+def deleteCompanyAdmin(request, company_id):
+    CustomUser.objects.get(id=company_id).delete()
+    messages.success(request, 'Compañia o admin eliminado exitosamente')
+    return redirect('/view_all_companies/')
+        
 class CreateSuperAdmin(LoginRequiredMixin, View):
     login_url = '/login/'
     def get(self, request):
@@ -77,12 +82,35 @@ class CreateSuperAdmin(LoginRequiredMixin, View):
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
         college = request.POST.get('college')
+        isAdmin = request.POST.get('RadioAdmin')
         password = request.POST.get('password')
+        college_name = College.objects.get(id=college)
         try:
             user = CustomUser.objects.get(email=email)
             messages.error(request, 'El correo ya existe')
             return redirect('/adminPanel/')
         except CustomUser.DoesNotExist:
-            CustomUser.objects.create_superuser(email=email, password=password, company_name=f'{name} {last_name}', name_of_student=f'{name} {last_name}', college=College.objects.get(id=college))
-            messages.success(request, 'Super Administrador creado exitosamente')
+            if isAdmin == "Si":
+                CustomUser.objects.create_superuser(email=email, password=password, company_name=f'{name} {last_name}', name_of_student=f'{name} {last_name}', college=College.objects.get(id=college))
+                messages.success(request, 'Super Administrador creado exitosamente')
+                return redirect('/adminPanel/')
+            else:
+                CustomUser.objects.create_adminColegio(email=email, password=password, company_name=f'{name} {last_name}', name_of_student=f'{name} {last_name}', college=College.objects.get(id=college))
+                messages.success(request, f'Administrador del colegio {college_name} creado exitosamente')
+                return redirect('/adminPanel/')
+            
+class CreateCollegesAdmin(LoginRequiredMixin, View):
+    login_url = '/login/'
+    def get(self, request):
+        url = '/adminPanel/'
+        return render(request, 'createColleges.html', {'url': url})
+    def post(self, request):
+        name = request.POST.get('name')
+        try:
+            college = College.objects.get(name=name)
+            messages.error(request, 'El colegio ya existe')
+            return redirect('/adminPanel/')
+        except College.DoesNotExist:
+            College.objects.create(name=name)
+            messages.success(request, 'Colegio creado exitosamente')
             return redirect('/adminPanel/')
