@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Ver ganancias</title> {% endblock %}
+{% block content %}
+<section class="agregarProducto">
+    <div class="container d-flex justify-content-center flex-column align-items-center text-center">
+        <h1 class="text-center mt-5">Ver ganancias</h1>
+        {% if not invoices %}
+            <h4 class="text-center my-5">No hay ganancias aún</h4>
+        {% endif %}
+        {% for invoice in invoices %}
+            {% if invoice %}
+                <div class="card d-flex justify-content-center align-items-center text-center" style="margin-bottom: 50px; width: 22rem;">
+                    <div class="card-body">
+                        <p>Cliente: <span style="font-weight: bold;">{{invoice.customer}}</span></p>
+                        <p>Vendedor: <span style="font-weight: bold;">{{invoice.user.name_of_student}}</span></p>
+                        <p>Producto: <span style="font-weight: bold;">{{invoice.product}}</span></p>
+                        <p>Cantidad: <span style="font-weight: bold;">{{invoice.quantity}}</span></p>
+                        <p>Método de pago: <span style="font-weight: bold;">{{invoice.method_paid}}</span></p>
+                        <p>Fecha: <span style="font-weight: bold;">{{invoice.date}}</span></p>
+                        <p>Importe: <span style="font-weight: bold;">₡{{invoice.total}}</span></p>
+                    </div>
+                </div>
+            {% else %}
+            <div class="card" style="margin-bottom: 50px;">
+                <div class="card-body">
+                    <h3>No hay ganancias aún</h3>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        <div class="buttons-centered d-flex justify-content-center align-items-center text-center">
+            <p class="mx-2">Total en efectivo: <span style="font-weight: bold;">₡{{total_efectivo}}</span></p>
+            <p>Total en sinpe: <span style="font-weight: bold;">₡{{total_sinpe}}</span></p>
+        </div>
+        <p>Total: <span style="font-weight: bold;">₡{{total_recaudado}}</span></p>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'PanelAdmin.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Ver todos los productos</title> {% endblock %}
+{% block content %}
+    {% if request.user.is_superuser %}
+        <section class="view_products">
+            <div class="container">
+                <h1 class="text-center mt-5">Ver todos los productos</h1>
+                <div class="d-grid justify-content-center align-items-center text-center">
+                    {% for product in products %}
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <p class="card-text text-center">Mini empresa: <span style="font-weight: bold;">{{product.user.company_name}}</span></p>
+                                <p class="card-text text-center">Nombre del Producto: <span style="font-weight: bold;">{{product.name}}</span></p>
+                                <p class="card-text text-center">Descripción: <span style="font-weight: bold;">{{product.description}}</span></p>
+                                <p class="card-text text-center">Precio: <span style="font-weight: bold;">₡{{product.price}}</span></p>
+                                <form action="{% url 'DeleteProductsAdmin' product.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger d-flex justify-content-center mx-auto w-50">Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    {% if request.user.adminCollege %}
+        {% if not request.user.is_superuser %}
+            <section class="view_products">
+                <div class="container">
+                    <h1 class="text-center mt-5">Ver todos los productos del {{request.user.college}}</h1>
+                    <div class="d-grid justify-content-center align-items-center text-center">
+                        {% for product in products %}
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <p class="card-text text-center">Mini empresa: <span style="font-weight: bold;">{{product.user.company_name}}</span></p>
+                                    <p class="card-text text-center">Nombre del Producto: <span style="font-weight: bold;">{{product.name}}</span></p>
+                                    <p class="card-text text-center">Descripción: <span style="font-weight: bold;">{{product.description}}</span></p>
+                                    <p class="card-text text-center">Precio: <span style="font-weight: bold;">₡{{product.price}}</span></p>
+                                    <form action="{% url 'DeleteProductsAdmin' product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger d-flex justify-content-center mx-auto w-50">Eliminar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+    {% endif %}
+{% endblock %}

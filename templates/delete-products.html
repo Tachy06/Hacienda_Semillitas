@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Eliminar productos</title> {% endblock %}
+{% block content %}
+<section class="view_products">
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+                    <p style="font-size: 17px; font-weight: bold;">{{ message }}. Toca el logo del mep para volver a la página principal</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h1 class="text-center mt-5">Eliminar productos</h1>
+        {% for product in products %}
+            <div class="card" style="margin-bottom: 50px;">
+                <div class="card-body">
+                    <form action="{% url 'Delete-product' product.id %}" method="post">
+                        {% csrf_token %}
+                        <p class="card-text text-center">Mini empresa: <span style="font-weight: bold;">{{product.user.company_name}}</span></p>
+                        <p class="card-text text-center">Nombre del proyecto: <span style="font-weight: bold;">{{product.name}}</span></p>
+                        <p class="card-text text-center">Descripción: <span style="font-weight: bold;">{{product.description}}</span></p>
+                        <p class="card-text text-center">Precio: <span style="font-weight: bold;">₡{{product.price}}</span></p>
+                        <button type="submit" class="btn btn-danger d-flex justify-content-center mx-auto w-50">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

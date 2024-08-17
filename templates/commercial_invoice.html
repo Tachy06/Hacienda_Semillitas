@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% load static %}
+{% load pwa %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura</title>
+    {% progressive_web_app_meta %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .invoice {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 800px;
+            max-width: 100%;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo img {
+            width: 100px;
+        }
+        .invoice-number {
+            text-align: right;
+        }
+        .contact-info {
+            margin-top: 20px;
+            background-color: #f9c6c6;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .contact-info h3 {
+            margin-top: 0;
+        }
+        .contact-info p {
+            margin: 5px 0;
+        }
+        .items {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            background-color: #f9c6c6;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        .total {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice">
+        <div class="header">
+            <div class="logo">
+            </div>
+            <div class="invoice-number">
+                <h2>{{ company }}</h2>
+                <p>Fecha: {{ date }}</p>
+                <p>Hora: {{ time }}</p>
+            </div>
+        </div>
+        <div class="contact-info">
+            <h3>INFORMACIÓN DE CONTACTO</h3>
+            <p><strong>Nombre y Apellido:</strong> {{ identifier }}</p>
+            <p><strong>Vendedor:</strong> {{ seller }}</p>
+        </div>
+        <div class="items">
+            <table>
+                <thead>
+                    <tr>
+                        <th>NOMBRE DEL PRODUCTO</th>
+                        <th>CANTIDAD</th>
+                        <th>PRECIO</th>
+                        <th>TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₡ {{ item.product.price }}</td>
+                        <td>₡ {{ item.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="total">
+            <P><strong>Método de Pago:</strong> {{ payment_method }}</P>
+            <p><strong>Subtotal:</strong> ₡ {{ subtotal }}</p>
+            <p><strong>Cargo por servicio:</strong> ₡0</p>
+            <p><strong>TOTAL:</strong> ₡ {{ total }}</p>
+        </div>
+    </div>
+</body>
+</html>

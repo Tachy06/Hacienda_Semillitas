@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Modificar productos</title> {% endblock %}
+{% block content %}
+<section id="modificarProducto" class="container my-5">
+    <h2 class="text-center mt-5">Modificar Producto</h2>
+    <div class="card" style="margin-bottom: 50px;">
+        <div class="card-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nombreProductoModificado">Nombre del Producto</label>
+                    <input type="text" class="form-control" id="product" name="product" value="{{product.name}}" placeholder="Ingresa el nuevo nombre del producto">
+                </div>
+                <div class="form-group">
+                    <label for="descripcionProductoModificado">Descripción</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Ingresa la nueva descripción del producto">{{product.description}} </textarea>
+                </div>
+                <div class="form-group">
+                    <label for="precioProductoModificado">Precio</label>
+                    <input type="number" class="form-control" id="price" name="price" value="{{product.price}}" placeholder="Ingresa el nuevo precio">
+                </div>
+                <div class="d-flex justify-content-center align-items-center text-center">
+                    <button type="submit" class="btn btn-success btn-lg mt-3">Agregar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+{% load static %}
+{% load pwa %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}La web oficial de la mecánica Wesaca{% endblock %}">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    {% progressive_web_app_meta %}
+    {% block title %} <title>Panel Administrador</title> {% endblock %}
+</head>
+<body>
+    <section class="back">
+        <div class="container">
+            <a href="{{url}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16" style="margin-top: 15px; margin-left: 10px; color: black;">
+                    <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+    {% block content %} 
+        {% if request.user.is_superuser %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+                    <p style="font-size: 17px; font-weight: bold;">{{ message }}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+            <div class="products_admin">
+                <div class="container">
+                    <h1 class="text-center mt-3 mb-3">Panel Administrador</h1>
+                    <div class="buttons-centered d-flex flex-row justify-content-center align-items-center">
+                        <a href="{% url 'ViewProductsAdmin' %}" class="btn btn-primary">Ver todos los productos del país</a>
+                        <a href="{% url 'ViewAllCompanies' %}" class="btn btn-primary mx-1">Ver las empresas de todos los estudiantes</a>
+                    </div>
+                    <div class="buttons-centered d-flex flex-row justify-content-center align-items-center mt-3">
+                        <a href="{% url 'CreateSuperAdmin' %}" class="btn btn-primary">Crear usuario administrador</a>
+                        <a href="{% url 'CreateCollegeAdmin' %}" class="btn btn-primary mx-1">Agregar un nuevo colegio</a>
+                    </div>
+                    <h2 class="text-center mt-3 mb-3">Ver todas las facturas del sistema</h2>
+                    {% for invoice in invoices %}
+                        <div class="card-container d-flex justify-content-center align-items-center">
+                            <div class="card d-flex justify-content-center align-items-center text-center mt-4 mb-2" style="width: 40rem;">
+                                <div class="card-body">
+                                    <p class="card-text">Nombre del producto: <span style="font-weight: bold;">{{invoice.product}}</span></p>
+                                    <p class="card-text">Cliente: <span style="font-weight: bold;">{{invoice.customer}}</span></p>
+                                    <p class="card-text">Vendedor: <span style="font-weight: bold;">{{invoice.user.name_of_student}}</span></p>
+                                    <p class="card-text">Empresa: <span style="font-weight: bold;">{{invoice.user.company_name}}</span></p>
+                                    <p class="card-text">Cantidad: <span style="font-weight: bold;">{{invoice.quantity}}</span></p>
+                                    <p class="card-text">Total: <span style="font-weight: bold;">₡{{invoice.total}}</span></p>
+                                    <p class="card-text">Fecha: <span style="font-weight: bold;">{{invoice.date}}</span></p>
+                                    <form action="{% url 'DeleteInvoice' invoice.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger d-flex justify-content-center mx-auto w-50">Eliminar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <h3 class="text-center mt-4 mb-4">Total recaudado: ₡{{total}}</h3>
+                </div>
+            </div>
+        {% endif %}
+        {% if request.user.adminCollege %}
+            {% if request.user.is_superuser %}
+            {% else %}
+                <section class="products_Admin">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+                                <p style="font-size: 17px; font-weight: bold;">{{ message }}</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="container">
+                        <h1 class="text-center mt-3 mb-3">Panel Administrador del colegio {{user.college}}</h1>
+                        <div class="buttons-centered d-flex flex-row justify-content-center align-items-center">
+                            <a href="{% url 'ViewProductsAdmin' %}" class="btn btn-primary">Ver todos los productos</a>
+                            <a href="{% url 'ViewCompaniesForCollege' %}" class="btn btn-primary mx-1">Ver las empresas de los estudiantes</a>
+                        </div>
+                        <h2 class="text-center mt-3 mb-3">Ver todas las facturas del colegio {{user.college}}</h2>
+                        {% for invoice in invoices %}
+                            <div class="card-container d-flex justify-content-center align-items-center">
+                                <div class="card d-flex justify-content-center align-items-center text-center mt-4 mb-2" style="width: 40rem;">
+                                    <div class="card-body">
+                                        <p class="card-text">Nombre del producto: <span style="font-weight: bold;">{{invoice.product}}</span></p>
+                                        <p class="card-text">Cliente: <span style="font-weight: bold;">{{invoice.customer}}</span></p>
+                                        <p class="card-text">Vendedor: <span style="font-weight: bold;">{{invoice.user.name_of_student}}</span></p>
+                                        <p class="card-text">Empresa: <span style="font-weight: bold;">{{invoice.user.company_name}}</span></p>
+                                        <p class="card-text">Cantidad: <span style="font-weight: bold;">{{invoice.quantity}}</span></p>
+                                        <p class="card-text">Total: <span style="font-weight: bold;">₡{{invoice.total}}</span></p>
+                                        <p class="card-text">Fecha: <span style="font-weight: bold;">{{invoice.date}}</span></p>
+                                        <form action="{% url 'DeleteInvoice' invoice.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger d-flex justify-content-center mx-auto w-50">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <h3 class="text-center mt-4 mb-4">Total recaudado: ₡{{total}}</h3>
+                    </div>
+                </section>
+            {% endif %}
+        {% endif %}
+    {% endblock %}
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script> 
+</body>
+</html>

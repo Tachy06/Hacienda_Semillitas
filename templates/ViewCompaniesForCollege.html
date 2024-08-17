@@ -1,0 +1,34 @@
+{% extends 'PanelAdmin.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Ver todas las empresas del colegio {{ college }}</title> {% endblock %}
+{% block content %}
+<section class="view_products">
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+                    <p style="font-size: 17px; font-weight: bold;">{{ message }}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h1 class="text-center mt-5">Ver todas las empresas del {{ college }}</h1>
+        <div class="d-grid justify-content-center align-items-center text-center">
+            {% for company in companies %}
+                <div class="card d-flex justify-content-center align-items-center text-center mt-3">
+                    <div class="card-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <p>Nombre de la empresa: <span style="font-weight: bold;">{{company.company_name}}</span></p>
+                            <p>Correo de la empresa: <span style="font-weight: bold;">{{company.email}}</span></p>
+                            <p>Estudiante representante: <span style="font-weight: bold;">{{company.name_of_student}}</span></p>
+                            <a href="{% url 'DeleteCompany' company.id %}" class="btn btn-danger d-flex justify-content-center mx-auto px-3 py-2 w-50" style="font-size: 17px;">Eliminar</a>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

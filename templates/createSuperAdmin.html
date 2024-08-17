@@ -1,0 +1,69 @@
+{% extends 'PanelAdmin.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Crear super administrador</title> {% endblock %}
+{% block content %}
+    <section class="register">
+        <div class="container">
+            <h1 class="text-center mt-5 mb-3">Registrar un usuario administrador</h1>
+            <div class="card mb-5">
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label"><span class="text-danger">*</span>Nombre del administrador</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="last_name" class="form-label"><span class="text-danger">*</span>Apellido(s) del administrador</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label"><span class="text-danger">*</span>Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="college" class="form-label"><span class="text-danger">*</span>Colegio al que pertenece</label>
+                                <select name="college" id="college" class="form-select" required>
+                                    <option value="0" selected disabled>Seleccione un colegio</option>
+                                    {% for college in colleges %}
+                                        <option value="{{college.id}}">{{college.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                                <label style="margin-bottom: 30px;">Es super administrador</label>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="form-check">
+                                        <input class="radio_admin" type="radio" name="RadioAdmin" id="flexRadioYes" value="Si" checked style="width: 40px; height: 20px; margin: 0px; padding: 0px;">
+                                        <label class="form-check-label" for="flexRadioYes">
+                                            Sí
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="radio_admin" type="radio" name="RadioAdmin" id="flexRadioNo" value="No" style="width: 40px; height: 20px; margin: 0px; padding: 0px;">
+                                        <label class="form-check-label" for="flexRadioNo" style="margin-right: 10px;">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 text-center">
+                                <label for="password" class="form-label"><span class="text-danger">*</span>Contraseña</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

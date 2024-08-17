@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Buscar por colegio</title> {% endblock %}
+{% block content %}
+    <section class="search_college">
+        <div class="container">
+            <h1 class="text-center mt-5">Buscar por colegio</h1>
+            <div class="d-flex justify-content-center align-items-center text-center">
+                <div class="card d-flex justify-content-center align-items-center text-center w-50 mb-5">
+                    <div class="card-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="college" class="form-label">Nombre del colegio</label>
+                                <select name="college" id="college" class="form-select" required>
+                                    <option value="0" selected>Seleccione una aplicación</option>
+                                    {% for college in colleges %}
+                                        <option value="{{college.id}}">{{college.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-50">Buscar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

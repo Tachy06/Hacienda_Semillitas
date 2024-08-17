@@ -1,0 +1,44 @@
+{% extends 'PanelAdmin.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Ver todas las empresas</title> {% endblock %}
+{% block content %}
+<section class="view_products">
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+                    <p style="font-size: 17px; font-weight: bold;">{{ message }}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h1 class="text-center mt-5">Ver todas las empresas</h1>
+        <div class="d-grid justify-content-center align-items-center text-center">
+            {% for company in companies %}
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {% if company.is_superuser or company.adminCollege %}
+                                <p class="card-text text-center">Nombre del admin: <span style="font-weight: bold;">{{company.name_of_student}}</span></p>
+                                <p class="card-text text-center">Correo del admin: <span style="font-weight: bold;">{{company.email}}</span></p>
+                                {% if company.adminCollege %}
+                                    <p class="card-text text-center">Rol del admin: <span style="font-weight: bold;">Administrador del colegio {{company.college}}</span></p>
+                                {% else %}
+                                    <p class="card-text text-center">Rol del admin: <span style="font-weight: bold;">Super Administrador</span></p>
+                                {% endif %}
+                                <a href="{% url 'DeleteCompany' company.id %}" class="btn btn-danger d-flex justify-content-center mx-auto px-3 py-2 w-50" style="font-size: 17px;">Eliminar</a>
+                            {% else %}
+                                <p class="card-text text-center">Nombre de la empresa: <span style="font-weight: bold;">{{company.company_name}}</span></p>
+                                <p class="card-text text-center">Correo de la empresa: <span style="font-weight: bold;">{{company.email}}</span></p>
+                                <a href="{% url 'DeleteCompany' company.id %}" class="btn btn-danger d-flex justify-content-center mx-auto px-3 py-2 w-50" style="font-size: 17px;">Eliminar</a>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% load static %}
+{% load pwa %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}La web oficial de la mecánica Wesaca{% endblock %}">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    {% progressive_web_app_meta %}
+    {% block title %} <title>Register Hacienda Semillitas</title> {% endblock %}
+</head>
+<body>
+    <section class="register">
+        <section class="back">
+            <div class="container">
+                <a href="{{url}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16" style="margin-top: 15px; margin-left: 10px; color: black;">
+                        <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+        <div class="container">
+            <h1 class="text-center mt-5 mb-3">Registrarse</h1>
+            <div class="card mb-5">
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="company" class="form-label"><span class="text-danger">*</span>Nombre del emprendimiento</label>
+                                <input type="text" class="form-control" id="company" name="company" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label"><span class="text-danger">*</span>Nombre de un integrante</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="last_name" class="form-label"><span class="text-danger">*</span>Apellidos del integrante</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="college" class="form-label"><span class="text-danger">*</span>Colegio a donde pertenece</label>
+                                <select name="college" id="college" class="form-select" required>
+                                    <option value="0" selected>Seleccione un colegio</option>
+                                    {% for college in colleges %}
+                                        <option value="{{college.id}}">{{college.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label"><span class="text-danger">*</span>Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label"><span class="text-danger">*</span>Contraseña</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                    </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

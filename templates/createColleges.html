@@ -1,0 +1,43 @@
+{% extends 'PanelAdmin.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Crear colegio</title> {% endblock %}
+{% block content %}
+    <section class="register">
+        <div class="container">
+            <h1 class="text-center mt-5 mb-3">Crear un nuevo colegio</h1>
+            <div class="card mb-5">
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="mb-3">
+                                <label for="name" class="form-label"><span class="text-danger">*</span>Nombre del colegio</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Registrar colegio</button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <h4 class="text-center mt-5 mb-3">Eliminar un colegio</h4>
+                    <form action="{% url 'DeleteCollegeAdmin' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="mb-3">
+                                <label for="name" class="form-label"><span class="text-danger">*</span>Seleccione el colegio</label>
+                                <select name="college_id" id="college_id" class="form-select">
+                                    <option value="0" selected disabled>Seleccione un colegio</option>
+                                    {% for college in colleges %}
+                                        <option value="{{college.id}}">{{college.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">Eliminar colegio</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Productos</title> {% endblock %}
+{% block content %}
+<style>
+    /* Estilo para ocultar los botones de incremento y decremento en Chrome, Safari y Edge */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Estilo para ocultar los botones de incremento y decremento en Firefox */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+</style>
+<section id="agregarProducto" class="container my-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+                <p style="font-size: 17px; font-weight: bold;">{{ message }}. Toca el logo del mep para volver a la página principal</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <h2 class="text-center mt-5 mb-4">Agregar Producto</h2>
+    <div class="card">
+        <div class="card-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nombreProducto">Nombre del Producto</label>
+                    <input type="text" class="form-control" id="product" name="product" placeholder="Ingresa el nombre del producto">
+                </div>
+                <div class="form-group">
+                    <label for="descripcionProducto">Descripción</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Ingresa la descripción del producto"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="precioProducto">Precio</label>
+                    <input type="number" class="form-control" id="price" name="price" placeholder="Ingresa el precio">
+                </div>
+                <div class="d-flex justify-content-center align-items-center text-center">
+                    <button type="submit" class="btn btn-custom btn-lg btn-block mt-3">Agregar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

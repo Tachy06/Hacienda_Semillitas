@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load pwa %}
+{% block title %} <title>Ver todos los productos</title> {% endblock %}
+{% block content %}
+<section id="verProductos" class="container my-5">
+    <h2 class="text-center mt-5">Productos Disponibles</h2>
+    {% for product in products %}
+        <div class="table-responsive">
+            <table class="table tabla-productos">
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Producto</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody id="listaProductos">
+                    <!-- Aquí se agregarán dinámicamente los productos -->
+                    <tr>
+                        <td>{{product.user.company_name}}</td>
+                        <td>{{product.name}}</td>
+                        <td>{{product.description}}</td>
+                        <td>{{product.price}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}
